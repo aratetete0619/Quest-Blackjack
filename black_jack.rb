@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'debug'
 
 class Blackjack
@@ -26,7 +28,6 @@ class Blackjack
     ### CPUの数を設定
     puts '対戦したいCPUの数(0~2人)を指定してください'
     number_of_opponents = gets.chomp.to_i
-    i = 0
     cpu_players = []
     number_of_opponents.times do |i|
       i += 1
@@ -57,7 +58,7 @@ class Blackjack
       puts '掛け金を設定してください'
       puts "現在の#{player.name}の所持チップ数は#{player.having_chips}です。"
       @betting_chips = gets.chomp.to_i
-      break if @betting_chips > 0
+      break if @betting_chips.positive?
     end
 
     ### プレイヤーが特殊ルールを選択するか判定
@@ -66,7 +67,8 @@ class Blackjack
       number_of_rule = gets.chomp.to_i
 
       ## ダブリングが選択された場合
-      if number_of_rule == 1
+      case number_of_rule
+      when 1
         doubling(player)
         puts "ダブリングを選択しました。#{@betting_chips}枚まで上乗せすることができます。"
         added_betting_chips = gets.chomp.to_i
@@ -80,7 +82,7 @@ class Blackjack
         break
 
       ## スプリットが選択された場合
-      elsif number_of_rule == 2
+      when 2
         if player.having_cards.map(&:values).flatten.uniq.length == 1 # 2枚のカードの値が同様であれば、uniqで重複を削除した配列の長さは1になる
           split(player)
           puts "スプリットを選択しました。掛け金は2倍され#{@betting_chips}枚になります。"
@@ -91,7 +93,7 @@ class Blackjack
         end
 
       ## サレンダーが選択された場合
-      elsif number_of_rule == 3
+      when 3
         puts 'サレンダーを選択しました。掛け金の半分を返却します。'
         puts "返却されるチップ数は#{@betting_chips / 2}です。　"
         player.decrease_chips(@betting_chips)
@@ -99,7 +101,7 @@ class Blackjack
         puts "所持チップ数: #{player.having_chips}"
         exit
 
-      elsif (1..4).include?(number_of_rule)
+      when 1..4
         break
       end
     end
@@ -119,11 +121,10 @@ class Blackjack
     loop do
       if @splitting.include?(player.name)
         puts "#{player.name}の現在の得点は#{player.having_points(player.cards_doublet1)}点です。カードを引きますか？（Y/N）"
-        answer = gets.chomp
       else
         puts "#{player.name}の現在の得点は#{player.having_points}点です。カードを引きますか？（Y/N）"
-        answer = gets.chomp
       end
+      answer = gets.chomp
 
       break unless answer == 'Y' # プレイヤーがYesと答えた場合
 
@@ -141,7 +142,6 @@ class Blackjack
       end
 
       if @splitting.include?(player.name) # プレイヤーがスプリットしている場合は2枚目の手札を引く
-        binding.break
         puts "#{player.name}はスプリットをしているため2枚目の手札を引くことができます。"
         puts "2枚目の#{player.name}の現在の得点は#{player.having_points(player.cards_doublet2)}点です。カードを引きますか？（Y/N）"
         answer = gets.chomp
@@ -150,7 +150,6 @@ class Blackjack
         player.drawing_cards_in_split(nil, @cards.drew)
         puts "#{player.name}の引いたカードは#{@cards.type}の#{@cards.number}です。"
         redo
-        binding.break
       end
 
       next unless player.having_points > 21 # 合計が21を超えたらループを抜けて終了
@@ -175,11 +174,10 @@ class Blackjack
         redo if answer != 1 && answer != 2
         player_having_points = player.having_points(player.cards_doublet2) if answer == 2
         player_having_points = player.having_points(player.cards_doublet1) if answer == 1
-        break
       else
         player_having_points = player.having_points
-        break
       end
+      break
     end
     @result_of_dealing_cards[player.name] = player_having_points
 
@@ -355,6 +353,7 @@ end
 
 class Dealer < Person
   def initialize
+    super
     @name = 'ディーラー'
   end
 end
