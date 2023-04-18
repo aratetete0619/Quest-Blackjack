@@ -201,12 +201,13 @@ class Blackjack
 
     ### ディーラーがカードを引くか選択肢を与える
     if dealer.having_points < 17
+      puts "ディーラーは17点を超えるまでカードを引きます"
       loop do
         dealer.drawing_cards(@cards.drew)
         puts "ディーラーの引いたカードは#{@cards.type}の#{@cards.number}です。"
 
         if dealer.having_points > 21 # 合計が21を超えたらゲーム終了
-          puts 'プレイヤー全員の勝ちです'
+          puts 'ディーラーが21点を超えたためプレイヤー全員の勝ちです'
           player.increase_chips(@betting_chips * 2)
           puts "#{player.name}の所持金は#{player.having_chips}枚です。"
           puts 'ブラックジャックを終了します'
@@ -216,6 +217,7 @@ class Blackjack
       end
     end
     @result_of_dealing_cards[dealer.name] = dealer.having_points
+    puts "ディーラーの点数は、#{result_of_dealing_cards[dealer.name]}点となります。"
 
     ### プレイヤー、ディーラー、CPUの結果を表示
     winners = winners(dealer)
@@ -223,12 +225,15 @@ class Blackjack
 
     if winners.any?
       puts "#{winners.keys.join('と')}の勝ちです。"
+      puts "#{winners.map{ |key, value| "#{key}: #{value}点"}.join('、')}"
       puts "#{player.name}の負けです。" unless winners.keys.include?(player.name) || drawers.keys.include?(player.name)
       puts "#{player.name}は引き分けです。" if drawers.keys.include?(player.name)
     elsif drawers.any?
-      puts "#{drawers.keys.join('と')}は引き分けです。" if drawers.keys.any?
+      puts "ディーラーは、#{drawers.keys.join('と')}と引き分けです。"
+      puts "#{drawers.map{ |key, value| "#{key}: #{value}点"}.join('、')}"
       puts "#{player.name}の負けです。" unless winners.keys.include?(player.name) || drawers.keys.include?(player.name)
     elsif winners.empty? && drawers.empty?
+      puts "#{player.name}の点は、#{@result_of_dealing_cards[player.name]}点でした。"
       puts "#{dealer.name}の勝ちです。"
     end
 
@@ -241,6 +246,7 @@ class Blackjack
       player.decrease_chips(@betting_chips)
     end
 
+    puts "最終結果"
     puts "#{player.name}の所持金は#{player.having_chips}枚です。"
     puts 'ブラックジャックを終了します'
   end
