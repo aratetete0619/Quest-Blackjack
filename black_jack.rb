@@ -2,16 +2,11 @@
 
 require 'debug'
 
+### ブラックジャックゲームの基盤となるクラス
 class Blackjack
   def initialize
     # カードオブジェクトの生成
     @cards = Card.new
-
-    # 引いたカードの種類
-    @type = ''
-
-    # 引いたカードの数字
-    @number = 0
 
     # 全プレイヤーの引いたカードの合計結果
     @result_of_dealing_cards = {}
@@ -373,8 +368,7 @@ class Cpu < Person
 end
 
 class Card
-  attr_accessor :type, :number
-  attr_reader :number_of_cards, :cards
+  attr_reader :number_of_cards, :cards, :type, :number
 
   def initialize
     # カードの総数
