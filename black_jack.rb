@@ -121,7 +121,7 @@ class Blackjack
       end
       answer = gets.chomp
 
-      break unless answer == 'Y' # プレイヤーがYesと答えた場合
+      break unless answer == 'Y' # プレイヤーがYesと答えた場合カードを引く
 
       player.drawing_cards(@cards.drew)
       puts "#{player.name}の引いたカードは#{@cards.type}の#{@cards.number}です。"
@@ -147,14 +147,16 @@ class Blackjack
         redo
       end
 
-      next unless player.having_points > 21 # 合計が21を超えたらループを抜けて終了
+      if player.having_points > 21 # 合計が21を超えたらゲーム終了
 
-      puts "#{player.name}の現在の得点は#{player.cards1}です。"
-      puts "#{player.name}の負けです。"
-      player.decrease_chips(@betting_chips)
-      puts "#{player.name}の所持金は#{player.having_chips}枚です。"
-      puts 'ブラックジャックを終了します'
-      exit
+        puts "#{player.name}の現在の得点は#{player.having_points}です。"
+        puts "#{player.name}の負けです。"
+        player.decrease_chips(@betting_chips)
+        puts "#{player.name}の所持金は#{player.having_chips}枚です。"
+        puts 'ブラックジャックを終了します'
+        exit
+
+      end
 
       # プレイヤーがNOと答えた場合
     end
