@@ -29,10 +29,11 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-darwin-22
 
 DEPENDENCIES
   debug (~> 1.0)
-  rubocop (~> 0.80.0)
+  rubocop
 
 BUNDLED WITH
    2.4.10
