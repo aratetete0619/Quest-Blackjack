@@ -87,30 +87,28 @@ class Game
 
   private
 
-
   def setting_cpu_count
     puts '対戦したいCPUの数(0~2人)を指定してください'
     number_of_cpu = gets.chomp.to_i
     number_of_cpu.times { |i| @cpu_players << Cpu.new(i + 1) }
   end
 
-
   def take_turn(player)
     player.drawing_cards
     puts "#{player.name}の引いたカードは#{player.card_suit}の#{player.card_number}です"
   end
-
 
   def setting_stake
     loop do
       puts '掛け金を設定してください'
       puts "現在の#{@player.name}の所持チップ数は#{@player.having_chips}です。"
       @player.betting_chips = gets.chomp.to_i
-      puts 'エラー：0以下の数字、もしくは数字以外の値が入力されました。' unless @player.betting_chips.positive?
+      unless @player.betting_chips.positive?
+        puts 'エラー：0以下の数字、もしくは数字以外の値が入力されました。'
+      end
       break if @player.betting_chips > 0
     end
   end
-
 
   def setting_special_rule
     puts "特殊ルールを選択しますか？(1:ダブリング, 2:スプリット, 3:サレンダー, 4:選択しない)
@@ -127,7 +125,6 @@ class Game
     end
   end
 
-
   def additional_player_turn
     loop do
       puts "#{@player.name}の現在の得点は#{@player.having_points}点です。カードを引きますか？（Y/N）"
@@ -139,7 +136,6 @@ class Game
     end
   end
 
-
   def player_lose
     puts "#{@player.name}の現在の得点は#{@player.having_points}です。"
     puts "#{@player.name}の負けです。"
@@ -149,7 +145,6 @@ class Game
     exit
   end
 
-
   def dealer_lose
     puts 'ディーラーが21点を超えたためプレイヤー全員の勝ちです'
     @player.increase_chips(@player.betting_chips * 2)
@@ -158,7 +153,6 @@ class Game
     exit
   end
 
-
   def pick_up_cards_for_win
     if @special_rule.includes_splitting?
       @result_of_dealing_cards[@player.name] = @special_rule.active.select_cards_from_hand
@@ -166,7 +160,6 @@ class Game
       @result_of_dealing_cards[@player.name] = @player.having_points
     end
   end
-
 
   def additional_cpu_turn
     @cpu_players.each do |cpu_player|
@@ -185,7 +178,6 @@ class Game
     end
   end
 
-
   def additional_dealer_turn
     if @dealer.having_points < 17
       puts 'ディーラーは17点を超えるまでカードを引きます'
@@ -199,11 +191,9 @@ class Game
     puts "ディーラーの点数は、#{@result_of_dealing_cards[@dealer.name]}点となります。"
   end
 
-
   def take_turn_in_split
     @special_rule.active.to_deal_card
   end
-
 
   def final_judgment
     dealer_points = @result_of_dealing_cards[@dealer.name]
@@ -211,13 +201,11 @@ class Game
     @drawers = @result_of_dealing_cards.select { |key, value| value == dealer_points && key != @dealer.name }
   end
 
-
   def result_of_game
     winners_reports if @winners.any?
     drawers_reports if @drawers.any?
     dealer_win if @winners.empty? && @drawers.empty?
   end
-
 
   def winners_reports
     puts "#{@winners.keys.join('と')}の勝ちです。"
@@ -228,7 +216,6 @@ class Game
     puts "#{@player.name}は引き分けです。" if @drawers.keys.include?(@player.name)
   end
 
-
   def drawers_reports
     puts "ディーラーは、#{@drawers.keys.join('と')}と引き分けです。"
     puts @drawers.map { |key, value| "#{key}: #{value}点" }.join('、').to_s
@@ -237,13 +224,11 @@ class Game
     end
   end
 
-
   def dealer_win
     puts "#{@player.name}の点は、#{@result_of_dealing_cards[@player.name]}点でした。"
     puts "#{@dealer.name}の勝ちです。"
     puts "#{@player.name}の負けです。"
   end
-
 
   def transfer_chips
     case @player.name
