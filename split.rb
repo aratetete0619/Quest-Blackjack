@@ -19,7 +19,6 @@ class Split
   end
 
   def to_deal_card
-
     split1_turn
 
     split2_turn
@@ -27,17 +26,20 @@ class Split
     if @splitting && @player.having_points == 11
       puts "#{@player.name}はAのスプリットをしているためここで終了します。"
     end
-
   end
 
   def select_cards_from_hand
     loop do
-      points1 = @player.having_points(@player.cards_split1) if @player.having_points(@player.cards_split1) <= 21
-      points2 = @player.having_points(@player.cards_split2) if @player.having_points(@player.cards_split2) <= 21
+      if @player.having_points(@player.cards_split1) <= 21
+        points1 = @player.having_points(@player.cards_split1)
+      end
+      if @player.having_points(@player.cards_split2) <= 21
+        points2 = @player.having_points(@player.cards_split2)
+      end
       points = []
       points << points1 if points1
       points << points2 if points2
-      puts "#{@player.name}の現在の得点は#{points.join("点と")}点です。"
+      puts "#{@player.name}の現在の得点は#{points.join('点と')}点です。"
       if points.length > 1
         puts '1枚目か2枚目のどちらかを選んでください。(1か2を入力してください)'
         answer = gets.chomp.to_i
@@ -49,9 +51,9 @@ class Split
     end
   end
 
-  def player_lose(cycle)
+  def player_lose(_cycle)
     puts 'バーストしてしまいました。'
-    cycle = false
+    _cycle = false
     exit if @cycle1 == false && @cycle2 == false
   end
 
@@ -60,12 +62,11 @@ class Split
     loop do
       if @player.busted?(@player.cards_split1)
         @cycle1 = player_lose(@cycle1)
-        break if !@cycle1
+        break unless @cycle1
       end
       puts "#{@player.name}の現在の得点は#{@player.having_points(@player.cards_split1)}点です。カードを引きますか？（Y/N）"
       answer = gets.chomp
       break @cycle1 = false unless answer == 'Y'
-
 
       @player.drawing_cards_at_first_in_splitting
       puts "#{@player.name}の引いたカードは#{@player.cards_split1_suits}の#{@player.cards_split1_number}です。"
@@ -77,13 +78,12 @@ class Split
     loop do
       if @player.busted?(@player.cards_split2)
         @cycle2 = player_lose(@cycle2)
-        break if !@cycle2
+        break unless @cycle2
       end
       puts "#{@player.name}はスプリットをしているため2枚目の手札を引くことができます。"
       puts "2枚目の#{@player.name}の現在の得点は#{@player.having_points(@player.cards_split2)}点です。カードを引きますか？（Y/N）"
       answer = gets.chomp
       break @cycle2 = false unless answer == 'Y'
-
 
       @player.drawing_cards_at_second_in_splitting
       puts "#{@player.name}の引いたカードは#{@player.cards_split2_suits}の#{@player.cards_split2_number}です。"

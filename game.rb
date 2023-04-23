@@ -41,7 +41,9 @@ class Game
 
     if @special_rule.includes_splitting?
       take_turn_in_split
-      exit if @player.having_points(@player.cards_split1) >21 && @player.having_points(@player.cards_split2) > 21
+      if @player.having_points(@player.cards_split1) > 21 && @player.having_points(@player.cards_split2) > 21
+        exit
+      end
     end
 
     additional_player_turn unless @special_rule.includes_splitting?
@@ -87,7 +89,7 @@ class Game
       puts '掛け金を設定してください'
       puts "現在の#{@player.name}の所持チップ数は#{@player.having_chips}です。"
       @player.betting_chips = gets.chomp.to_i
-      puts 'エラー：0以下の数字、もしくは数字以外の値が入力されました。' unless @player.betting_chips > 0
+      puts 'エラー：0以下の数字、もしくは数字以外の値が入力されました。' unless @player.betting_chips.positive?
       break if @player.betting_chips > 0
     end
   end
