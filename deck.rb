@@ -12,8 +12,8 @@ class Deck
   end
 
   def drew
-    # @cards << { Card::SUITS.sample => Card::NUMBER.sample}
-    @cards << { 'ハート' => 2 }
+    @cards << { Card::SUITS.sample => Card::NUMBER.sample}
+    # @cards << { 'ハート' => 2 }
   end
 
   def drew_at_first_in_splitting

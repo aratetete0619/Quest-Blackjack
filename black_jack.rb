@@ -39,9 +39,12 @@ class Game
     @dealer.drawing_cards_at_second_time
     puts "#{@dealer.name}の引いた2枚目のカードはわかりません。"
 
-    take_turn_in_split if @special_rule.includes_splitting?
+    if @special_rule.includes_splitting?
+      take_turn_in_split
+      exit if @player.having_points(@player.cards_split1) >21 && @player.having_points(@player.cards_split2) > 21
+    end
 
-    additional_player_turn
+    additional_player_turn unless @special_rule.includes_splitting?
 
     player_lose if @player.busted?
 
