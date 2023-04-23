@@ -1,0 +1,187 @@
+Inspecting 13 files
+.CCCCCCCCCCCC
+
+Offenses:
+
+card.rb:3:3: C: Style/AsciiComments: Use only ascii symbols in comments.
+# カードのスートと数字を定数として定義するclass
+  ^^^^^^^^^^^^^^^^^^^^
+chip.rb:3:3: C: Style/AsciiComments: Use only ascii symbols in comments.
+# プレイヤーの所持チップ数を管理するclass
+  ^^^^^^^^^^^^^^^^^
+cpu.rb:5:1: C: Style/Documentation: Missing top-level class documentation comment.
+class Cpu < Person
+^^^^^
+dealer.rb:5:1: C: Style/Documentation: Missing top-level class documentation comment.
+class Dealer < Person
+^^^^^
+deck.rb:5:3: C: Style/AsciiComments: Use only ascii symbols in comments.
+# デッキクラス
+  ^^^^^^
+deck.rb:17:20: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # @cards << { 'ハート' => 2 }
+                   ^^^
+doubling.rb:3:3: C: Style/AsciiComments: Use only ascii symbols in comments.
+# ダブリングを選択した場合の処理を行う
+  ^^^^^^^^^^^^^^^^^^
+game.rb:13:3: C: Style/AsciiComments: Use only ascii symbols in comments.
+# ゲームの進行を管理するクラス
+  ^^^^^^^^^^^^^^
+game.rb:14:1: C: Metrics/ClassLength: Class has too many lines. [176/100]
+class Game ...
+^^^^^^^^^^
+game.rb:25:3: C: Metrics/AbcSize: Assignment Branch Condition size for start is too high. [<0, 41, 7> 41.59/15]
+  def start ...
+  ^^^^^^^^^
+game.rb:25:3: C: Metrics/MethodLength: Method has too many lines. [31/10]
+  def start ...
+  ^^^^^^^^^
+game.rb:34:7: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # 掛け金の設定
+      ^^^^^^
+game.rb:37:7: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # 特殊ルールの設定
+      ^^^^^^^^
+game.rb:40:7: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # ディーラーのターン
+      ^^^^^^^^^
+game.rb:43:7: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # ディーラーの2枚目のカードを引く
+      ^^^^^^
+game.rb:47:7: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # スプリットの場合は、スプリットのターンを実行
+      ^^^^^^^^^^^^^^^^^^^^^^
+game.rb:50:81: C: Layout/LineLength: Line is too long. [109/80]
+      if @player.having_points(@player.cards_split1) > 21 && @player.having_points(@player.cards_split2) > 21
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+game.rb:55:7: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # プレイヤーのターン
+      ^^^^^^^^^
+game.rb:58:7: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # プレイヤーがバーストした場合は、ゲームを終了
+      ^^^^^^^^^^^^^^^^^^^^^^
+game.rb:61:7: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # スプリットの場合は、手札を選択する。スプリットでない場合は自動で選択される。
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+game.rb:64:10: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # CPUのターン
+         ^^^^
+game.rb:67:81: C: Layout/LineLength: Line is too long. [85/80]
+    puts "ディーラーの引いた2枚目のカードは#{@dealer.type_at_second}の#{@dealer.number_at_second}でした。"
+                                                                                ^^^^^
+game.rb:70:7: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # ディーラーのターン
+      ^^^^^^^^^
+game.rb:73:7: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # 勝敗の判定
+      ^^^^^
+game.rb:76:7: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # 結果の表示
+      ^^^^^
+game.rb:79:7: C: Style/AsciiComments: Use only ascii symbols in comments.
+    # チップの移動
+      ^^^^^^
+game.rb:84:81: C: Layout/LineLength: Line is too long. [84/80]
+    puts @result_of_dealing_cards.map { |key, value| "#{key}: #{value}点" }.join('、')
+                                                                                ^^^^
+game.rb:109:16: C: Style/NumericPredicate: Use @player.betting_chips.positive? instead of @player.betting_chips > 0.
+      break if @player.betting_chips > 0
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+game.rb:113:3: C: Metrics/AbcSize: Assignment Branch Condition size for setting_special_rule is too high. [<2, 14, 10> 17.32/15]
+  def setting_special_rule ...
+  ^^^^^^^^^^^^^^^^^^^^^^^^
+game.rb:113:3: C: Metrics/MethodLength: Method has too many lines. [12/10]
+  def setting_special_rule ...
+  ^^^^^^^^^^^^^^^^^^^^^^^^
+game.rb:118:81: C: Layout/LineLength: Line is too long. [91/80]
+      if @player.having_cards.map(&:values).flatten.uniq.length != 1 && number_of_rule == 2
+                                                                                ^^^^^^^^^^^
+game.rb:121:13: C: Style/MultipleComparison: Avoid comparing a variable with multiple items in a conditional, use Array#include? instead.
+      elsif number_of_rule == 1 || number_of_rule == 2 || number_of_rule == 3
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+game.rb:158:81: C: Layout/LineLength: Line is too long. [90/80]
+      @result_of_dealing_cards[@player.name] = @special_rule.active.select_cards_from_hand
+                                                                                ^^^^^^^^^^
+game.rb:164:3: C: Metrics/MethodLength: Method has too many lines. [14/10]
+  def additional_cpu_turn ...
+  ^^^^^^^^^^^^^^^^^^^^^^^
+game.rb:200:81: C: Layout/LineLength: Line is too long. [86/80]
+    @winners = @result_of_dealing_cards.select { |_key, value| value > dealer_points }
+                                                                                ^^^^^^
+game.rb:201:81: C: Layout/LineLength: Line is too long. [109/80]
+    @drawers = @result_of_dealing_cards.select { |key, value| value == dealer_points && key != @dealer.name }
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+game.rb:210:3: C: Metrics/AbcSize: Assignment Branch Condition size for winners_reports is too high. [<0, 20, 3> 20.22/15]
+  def winners_reports ...
+  ^^^^^^^^^^^^^^^^^^^
+game.rb:213:81: C: Layout/LineLength: Line is too long. [87/80]
+    unless @winners.keys.include?(@player.name) || @drawers.keys.include?(@player.name)
+                                                                                ^^^^^^^
+game.rb:219:3: C: Metrics/AbcSize: Assignment Branch Condition size for drawers_reports is too high. [<0, 15, 2> 15.13/15]
+  def drawers_reports ...
+  ^^^^^^^^^^^^^^^^^^^
+game.rb:222:5: C: Style/GuardClause: Use a guard clause (if @winners.keys.include?(@player.name) || @drawers.keys.include?(@player.name); return; end) instead of wrapping the code inside a conditional expression.
+    unless @winners.keys.include?(@player.name) || @drawers.keys.include?(@player.name)
+    ^^^^^^
+game.rb:222:81: C: Layout/LineLength: Line is too long. [87/80]
+    unless @winners.keys.include?(@player.name) || @drawers.keys.include?(@player.name)
+                                                                                ^^^^^^^
+person.rb:7:3: C: Style/AsciiComments: Use only ascii symbols in comments.
+# 全てのプレイヤーの基底クラス
+  ^^^^^^^^^^^^^^
+person.rb:32:3: C: Metrics/MethodLength: Method has too many lines. [18/10]
+  def having_points(cards = @deck.cards) ...
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+player.rb:7:3: C: Style/AsciiComments: Use only ascii symbols in comments.
+# プレイヤークラス
+  ^^^^^^^^
+special_rule.rb:7:3: C: Style/AsciiComments: Use only ascii symbols in comments.
+# プレイヤーが選択したルールを実行する
+  ^^^^^^^^^^^^^^^^^^
+split.rb:5:8: C: Style/AsciiComments: Use only ascii symbols in comments.
+# splitの処理をするclass
+       ^^^^^^
+split.rb:27:5: C: Style/GuardClause: Use a guard clause (return unless @splitting && @player.having_points == 11) instead of wrapping the code inside a conditional expression.
+    if @splitting && @player.having_points == 11
+    ^^
+split.rb:32:3: C: Metrics/AbcSize: Assignment Branch Condition size for select_cards_from_hand is too high. [<4, 25, 14> 28.93/15]
+  def select_cards_from_hand ...
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+split.rb:32:3: C: Metrics/CyclomaticComplexity: Cyclomatic complexity for select_cards_from_hand is too high. [9/6]
+  def select_cards_from_hand ...
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+split.rb:32:3: C: Metrics/MethodLength: Method has too many lines. [19/10]
+  def select_cards_from_hand ...
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+split.rb:32:3: C: Metrics/PerceivedComplexity: Perceived complexity for select_cards_from_hand is too high. [9/7]
+  def select_cards_from_hand ...
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+split.rb:61:3: C: Metrics/AbcSize: Assignment Branch Condition size for split1_turn is too high. [<4, 15, 4> 16.03/15]
+  def split1_turn ...
+  ^^^^^^^^^^^^^^^
+split.rb:61:3: C: Metrics/MethodLength: Method has too many lines. [12/10]
+  def split1_turn ...
+  ^^^^^^^^^^^^^^^
+split.rb:68:81: C: Layout/LineLength: Line is too long. [100/80]
+      puts "#{@player.name}の現在の得点は#{@player.having_points(@player.cards_split1)}点です。カードを引きますか？（Y/N）"
+                                                                                ^^^^^^^^^^^^^^^^^^^^
+split.rb:73:81: C: Layout/LineLength: Line is too long. [99/80]
+      puts "#{@player.name}の引いたカードは#{@player.cards_split1_suits}の#{@player.cards_split1_number}です。"
+                                                                                ^^^^^^^^^^^^^^^^^^^
+split.rb:77:3: C: Metrics/AbcSize: Assignment Branch Condition size for split2_turn is too high. [<4, 17, 4> 17.92/15]
+  def split2_turn ...
+  ^^^^^^^^^^^^^^^
+split.rb:77:3: C: Metrics/MethodLength: Method has too many lines. [13/10]
+  def split2_turn ...
+  ^^^^^^^^^^^^^^^
+split.rb:85:81: C: Layout/LineLength: Line is too long. [104/80]
+      puts "2枚目の#{@player.name}の現在の得点は#{@player.having_points(@player.cards_split2)}点です。カードを引きますか？（Y/N）"
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^
+split.rb:90:81: C: Layout/LineLength: Line is too long. [99/80]
+      puts "#{@player.name}の引いたカードは#{@player.cards_split2_suits}の#{@player.cards_split2_number}です。"
+                                                                                ^^^^^^^^^^^^^^^^^^^
+surrender.rb:3:9: C: Style/AsciiComments: Use only ascii symbols in comments.
+# playerがsurrenderを選択した場合の処理を行うclass
+        ^
+
+13 files inspected, 60 offenses detected

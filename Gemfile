@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "debug", "~> 1.0"
-gem "rubocop", "~> 0.80.0"
+gem 'debug', '~> 1.0'
+gem 'rubocop', require: false
