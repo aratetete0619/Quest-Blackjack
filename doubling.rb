@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# ダブリングを選択した場合の処理を行う
 class Doubling
   attr_reader :doubling
 

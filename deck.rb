@@ -2,6 +2,7 @@
 
 require_relative 'card'
 
+# デッキクラス
 class Deck
   attr_reader :cards, :cards_split1, :cards_split2
 

@@ -4,6 +4,7 @@ require_relative 'doubling'
 require_relative 'split'
 require_relative 'surrender'
 
+# プレイヤーが選択したルールを実行する
 class SpecialRule
   def initialize(number_of_rule, player)
     @selected_rule = case number_of_rule

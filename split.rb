@@ -2,6 +2,7 @@ require_relative 'card'
 
 # frozen_string_literal: true
 
+# splitの処理をするclass
 class Split
   attr_reader :splitting
 

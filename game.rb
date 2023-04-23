@@ -10,6 +10,7 @@ require_relative 'special_rule'
 
 require 'debug'
 
+# ゲームの進行を管理するクラス
 class Game
   def initialize
     @player = Player.new
@@ -30,15 +31,20 @@ class Game
       @cpu_players.each(&:drawing_cards)
     end
 
+    # 掛け金の設定
     setting_stake
 
+    # 特殊ルールの設定
     setting_special_rule
 
+    # ディーラーのターン
     take_turn(@dealer)
 
+    # ディーラーの2枚目のカードを引く
     @dealer.drawing_cards_at_second_time
     puts "#{@dealer.name}の引いた2枚目のカードはわかりません。"
 
+    # スプリットの場合は、スプリットのターンを実行
     if @special_rule.includes_splitting?
       take_turn_in_split
       if @player.having_points(@player.cards_split1) > 21 && @player.having_points(@player.cards_split2) > 21
@@ -46,23 +52,31 @@ class Game
       end
     end
 
+    # プレイヤーのターン
     additional_player_turn unless @special_rule.includes_splitting?
 
+    # プレイヤーがバーストした場合は、ゲームを終了
     player_lose if @player.busted?
 
+    # スプリットの場合は、手札を選択する。スプリットでない場合は自動で選択される。
     pick_up_cards_for_win
 
+    # CPUのターン
     additional_cpu_turn
 
     puts "ディーラーの引いた2枚目のカードは#{@dealer.type_at_second}の#{@dealer.number_at_second}でした。"
     puts "ディーラーの現在の得点は#{@dealer.having_points}です。"
 
+    # ディーラーのターン
     additional_dealer_turn
 
+    # 勝敗の判定
     final_judgment
 
+    # 結果の表示
     result_of_game
 
+    # チップの移動
     transfer_chips
 
     puts '最終結果'
@@ -73,16 +87,19 @@ class Game
 
   private
 
+
   def setting_cpu_count
     puts '対戦したいCPUの数(0~2人)を指定してください'
     number_of_cpu = gets.chomp.to_i
     number_of_cpu.times { |i| @cpu_players << Cpu.new(i + 1) }
   end
 
+
   def take_turn(player)
     player.drawing_cards
     puts "#{player.name}の引いたカードは#{player.card_suit}の#{player.card_number}です"
   end
+
 
   def setting_stake
     loop do
@@ -93,6 +110,7 @@ class Game
       break if @player.betting_chips > 0
     end
   end
+
 
   def setting_special_rule
     puts "特殊ルールを選択しますか？(1:ダブリング, 2:スプリット, 3:サレンダー, 4:選択しない)
@@ -109,6 +127,7 @@ class Game
     end
   end
 
+
   def additional_player_turn
     loop do
       puts "#{@player.name}の現在の得点は#{@player.having_points}点です。カードを引きますか？（Y/N）"
@@ -120,6 +139,7 @@ class Game
     end
   end
 
+
   def player_lose
     puts "#{@player.name}の現在の得点は#{@player.having_points}です。"
     puts "#{@player.name}の負けです。"
@@ -129,6 +149,7 @@ class Game
     exit
   end
 
+
   def dealer_lose
     puts 'ディーラーが21点を超えたためプレイヤー全員の勝ちです'
     @player.increase_chips(@player.betting_chips * 2)
@@ -137,6 +158,7 @@ class Game
     exit
   end
 
+
   def pick_up_cards_for_win
     if @special_rule.includes_splitting?
       @result_of_dealing_cards[@player.name] = @special_rule.active.select_cards_from_hand
@@ -144,6 +166,7 @@ class Game
       @result_of_dealing_cards[@player.name] = @player.having_points
     end
   end
+
 
   def additional_cpu_turn
     @cpu_players.each do |cpu_player|
@@ -162,6 +185,7 @@ class Game
     end
   end
 
+
   def additional_dealer_turn
     if @dealer.having_points < 17
       puts 'ディーラーは17点を超えるまでカードを引きます'
@@ -175,9 +199,11 @@ class Game
     puts "ディーラーの点数は、#{@result_of_dealing_cards[@dealer.name]}点となります。"
   end
 
+
   def take_turn_in_split
     @special_rule.active.to_deal_card
   end
+
 
   def final_judgment
     dealer_points = @result_of_dealing_cards[@dealer.name]
@@ -185,11 +211,13 @@ class Game
     @drawers = @result_of_dealing_cards.select { |key, value| value == dealer_points && key != @dealer.name }
   end
 
+
   def result_of_game
     winners_reports if @winners.any?
     drawers_reports if @drawers.any?
     dealer_win if @winners.empty? && @drawers.empty?
   end
+
 
   def winners_reports
     puts "#{@winners.keys.join('と')}の勝ちです。"
@@ -200,6 +228,7 @@ class Game
     puts "#{@player.name}は引き分けです。" if @drawers.keys.include?(@player.name)
   end
 
+
   def drawers_reports
     puts "ディーラーは、#{@drawers.keys.join('と')}と引き分けです。"
     puts @drawers.map { |key, value| "#{key}: #{value}点" }.join('、').to_s
@@ -208,11 +237,13 @@ class Game
     end
   end
 
+
   def dealer_win
     puts "#{@player.name}の点は、#{@result_of_dealing_cards[@player.name]}点でした。"
     puts "#{@dealer.name}の勝ちです。"
     puts "#{@player.name}の負けです。"
   end
+
 
   def transfer_chips
     case @player.name

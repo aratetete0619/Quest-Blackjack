@@ -4,6 +4,7 @@ require_relative 'chip'
 require_relative 'deck'
 require_relative 'card'
 
+# 全てのプレイヤーの基底クラス
 class Person
   attr_accessor :name, :chip, :deck
 

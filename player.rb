@@ -4,6 +4,7 @@ require_relative 'person'
 require_relative 'chip'
 require_relative 'deck'
 
+# プレイヤークラス
 class Player < Person
   attr_accessor :betting_chips
 
